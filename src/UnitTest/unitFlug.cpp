@@ -318,29 +318,6 @@ constexpr const char* operator"" _TestFlug64(unsigned long long n)
   return "234";
 }
 
-static void TestNames()
-{
-  typedef TestFlug8 EnumClass;
-
-  std::string dd = typeid(EnumClass::TestValue05).name();
-
-
-  //std::string dddf = typename (EnumClass);
-  std::string dddf7 = typeid(EnumClass).name();
-
-  const auto& ddd = typeid(EnumClass);
-
-  std::string dddf = typeid(static_cast<EnumClass>(8)).raw_name();
-
-  EnumClass B = static_cast<EnumClass>(8);
-
-  std::string dddf3 = typeid(B).name();
-
-  int df = 4;
-  df++;
-
-}
-
 int main(int argc, char *argv[])
 {
 //

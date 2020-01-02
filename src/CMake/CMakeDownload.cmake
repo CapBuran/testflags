@@ -16,8 +16,14 @@ function(download_github_com_latest url tag_link filedst)
   else(${CMAKE_BINARY_DIR}/ThreeParty/${filedst})
     return()
   endif(NOT EXISTS ${CMAKE_BINARY_DIR}/ThreeParty/${filedst})
+  #execute_process(
+#    COMMAND "tar xvzf ${CMAKE_BINARY_DIR}/ThreeParty/${filedst}"
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/ThreeParty
+#  )
   execute_process(
-    COMMAND ${CMAKE_COMMAND} -E tar xvzf "${CMAKE_BINARY_DIR}/ThreeParty/${filedst}" > ${filedst}.tar.log
+    COMMAND ${CMAKE_COMMAND} -E tar xvzf ${CMAKE_BINARY_DIR}/ThreeParty/${filedst}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/ThreeParty
   )
+  #message("-- Download2: ${CMAKE_COMMAND} -E tar xvzf ${CMAKE_BINARY_DIR}/ThreeParty/${filedst}")
+
 endfunction()

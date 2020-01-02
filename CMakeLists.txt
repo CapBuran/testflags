@@ -28,8 +28,8 @@ endif()
 
 project(TestFlags C CXX)
 
-include(src/cmake/CMakeFunctions.cmake)
-include(src/cmake/CMakeDownload.cmake)
+include(src/CMake/CMakeFunctions.cmake)
+include(src/CMake/CMakeDownload.cmake)
 
 download_github_com_latest( "https://api.github.com/repos/google/googletest/releases/latest" "tarball_url" "googletest.tar.gz")
 
