@@ -216,9 +216,6 @@ struct TesterFlugs
     EnumClass A = static_cast<EnumClass>(4);
     EnumClass B = static_cast<EnumClass>(8);
 
-    uint64_t RawA = static_cast<uint64_t>(A);
-    uint64_t RawB = static_cast<uint64_t>(B);
-
     A &= B;
 
     uint64_t RawA_1 = static_cast<uint64_t>(A);
@@ -230,24 +227,40 @@ struct TesterFlugs
     EnumClassBaseType Rawa_1 = a;
 
     GTEST_ASSERT_EQ(Rawa_1, 14);
-
-    //EnumClassFlags::Flags<EnumClass, EnumClassBaseType> a(EnumClass::TestValue02);
-    //EnumClassFlags::Flags<EnumClass, EnumClassBaseType> b(EnumClass::TestValue03);
-
-    //GTEST_ASSERT_EQ(A != EnumClass::TestValue03, true);
-    //GTEST_ASSERT_EQ(A != B, true);
-    //GTEST_ASSERT_EQ(b != EnumClass::TestValue02, true);
-    //GTEST_ASSERT_EQ(b != A, true);
-
-    //B = EnumClass::TestValue02;
-    //b = EnumClass::TestValue02;
-
-    //GTEST_ASSERT_EQ(A != EnumClass::TestValue02, false);
-    //GTEST_ASSERT_EQ(A != B, false);
-    //GTEST_ASSERT_EQ(a != EnumClass::TestValue02, false);
-    //GTEST_ASSERT_EQ(b != A, false);
   }
 
+  static void TestLogicalXOR()
+  {
+    EnumClass A = static_cast<EnumClass>(0xf0);
+    EnumClass B = static_cast<EnumClass>(0x0f);
+
+    uint8_t RawA_1 = static_cast<uint8_t>(A^B);
+
+    GTEST_ASSERT_EQ(RawA_1, 0xff);
+
+    EnumClassFlags::Flags<EnumClass, EnumClassBaseType> a(EnumClass::TestValue02 | EnumClass::TestValue03 | EnumClass::TestValue01);
+
+    a^=0xff;
+
+    EnumClassBaseType Rawa_1 = a;
+
+    GTEST_ASSERT_EQ(static_cast<uint8_t>(Rawa_1), 241);
+  }
+
+  static void TestLogicalBitwises()
+  {
+    EnumClass A = EnumClass::TestValue02 << 1;
+    EnumClass B = EnumClass::TestValue03;
+
+    GTEST_ASSERT_EQ(A, B);
+
+    A <<= 1;
+    B <<= 1+1;
+    A <<= 1;
+
+    GTEST_ASSERT_EQ(A, B);
+
+  }
 
 };
 
@@ -267,7 +280,7 @@ TEST(Flags, TestLogicalNegation)
   TesterFlugs<TestFlug64, uint64_t>::TestLogicalNegation();
 }
 
-TEST(Flags, TestLogicalAND)
+TEST(Flags, TestLogical_AND_OR)
 {
   TesterFlugs<TestFlug8, uint8_t>::TestLogicalAND();
   TesterFlugs<TestFlug16, uint16_t>::TestLogicalAND();
@@ -275,61 +288,26 @@ TEST(Flags, TestLogicalAND)
   TesterFlugs<TestFlug64, uint64_t>::TestLogicalAND();
 }
 
+TEST(Flags, TestLogical_XOR)
+{
+  TesterFlugs<TestFlug8,  uint8_t>::TestLogicalXOR();
+  TesterFlugs<TestFlug16, uint16_t>::TestLogicalXOR();
+  TesterFlugs<TestFlug32, uint32_t>::TestLogicalXOR();
+  TesterFlugs<TestFlug64, uint64_t>::TestLogicalXOR();
+}
 
-//constexpr const char* operator"" _tostring(char16_t deg)
-//{
-//  return "123";
-//}
+TEST(Flags, TestLogicalBitwises)
+{
+  TesterFlugs<TestFlug8,  uint8_t>::TestLogicalBitwises();
+  TesterFlugs<TestFlug16, uint16_t>::TestLogicalBitwises();
+  TesterFlugs<TestFlug32, uint32_t>::TestLogicalBitwises();
+  TesterFlugs<TestFlug64, uint64_t>::TestLogicalBitwises();
+}
 
-
-//Logical AND
-//Logical OR
-//Bitwise XOR
-
-//Bitwise left shift[d]
-//Bitwise right shift[d][e]
-
-//bool
 //Subscript
-
-void operator"" _print(const char* str)
-{
-  std::cout << str;
-}
-
-struct mytype
-{
-  unsigned long long m;
-};
-
-constexpr mytype operator"" _mytype(unsigned long long n)
-{
-  return mytype{ n };
-}
-
-constexpr TestFlug64 operator"" _m1(char16_t n)
-{
-  return TestFlug64::TestValue01;
-}
-
-constexpr const char* operator"" _TestFlug64(unsigned long long n)
-{
-
-  return "234";
-}
 
 int main(int argc, char *argv[])
 {
-//
-////  TestFlug64::TestValue02_print;
-//  mytype y = 123_mytype;
-//
-//  auto d = TestFlug64::TestValue02; 
-//
-//  34_TestFlug64;
-//
-//  0x123ABC_print;
-
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
