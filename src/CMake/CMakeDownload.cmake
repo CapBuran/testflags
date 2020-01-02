@@ -11,18 +11,14 @@ function(download_github_com_latest url tag_link filedst)
   string(LENGTH ${_real_url_download} _real_url_download_end)
   string(SUBSTRING ${_real_url_download} ${_real_url_download_begin} ${_real_url_download_end} _real_url_download)
   message("-- Download: " ${_real_url_download})
-  if(NOT EXISTS ${CMAKE_BINARY_DIR}/ThreeParty/${filedst})
-    file(DOWNLOAD ${_real_url_download} ${CMAKE_BINARY_DIR}/ThreeParty/${filedst})
-  else(${CMAKE_BINARY_DIR}/ThreeParty/${filedst})
+  if(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThreeParty/${filedst})
+    file(DOWNLOAD ${_real_url_download} ${CMAKE_SOURCE_DIR}/ThreeParty/${filedst})
+  else(${CMAKE_SOURCE_DIR}/ThreeParty/${filedst})
     return()
-  endif(NOT EXISTS ${CMAKE_BINARY_DIR}/ThreeParty/${filedst})
-  #execute_process(
-#    COMMAND "tar xvzf ${CMAKE_BINARY_DIR}/ThreeParty/${filedst}"
-#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/ThreeParty
-#  )
+  endif(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThreeParty/${filedst})
   execute_process(
-    COMMAND ${CMAKE_COMMAND} -E tar xvzf ${CMAKE_BINARY_DIR}/ThreeParty/${filedst}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/ThreeParty
+    COMMAND ${CMAKE_COMMAND} -E tar xvzf ${CMAKE_SOURCE_DIR}/ThreeParty/${filedst}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ThreeParty
   )
   #message("-- Download2: ${CMAKE_COMMAND} -E tar xvzf ${CMAKE_BINARY_DIR}/ThreeParty/${filedst}")
 

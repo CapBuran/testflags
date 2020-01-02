@@ -33,8 +33,8 @@ include(src/CMake/CMakeDownload.cmake)
 
 download_github_com_latest( "https://api.github.com/repos/google/googletest/releases/latest" "tarball_url" "googletest.tar.gz")
 
-SUBDIRLIST(GoogleTestRootDir ${CMAKE_BINARY_DIR}/ThreeParty)
+SUBDIRLIST(GoogleTestRootDir ${CMAKE_SOURCE_DIR}/ThreeParty)
 
-add_subdirectory(${CMAKE_BINARY_DIR}/ThreeParty/${GoogleTestRootDir})
+add_subdirectory(${CMAKE_SOURCE_DIR}/ThreeParty/${GoogleTestRootDir})
 
 add_subdirectory(src/UnitTest)
