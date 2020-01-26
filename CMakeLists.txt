@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.0)
 
 message(STATUS "CMAKE_VERSION='${CMAKE_VERSION}'")
 message(STATUS "CMAKE_GENERATOR='${CMAKE_GENERATOR}'")
@@ -13,13 +13,13 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
+#set(CMAKE_CXX_EXTENSIONS ON)
 
 if(WIN32)
   ## all configurations are using the dynamically loaded release CRT (like 3rd libraries) and multi-processor compilation
   set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} /MD /MP")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MD /MP")
-  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MD /MP -std=c++1z -std=gnu++1z")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD /MP -std=c++1z -std=gnu++1z")
   add_definitions(-DWIN32 -D_WIN32 -DWINDOWS -D_WINDOWS -D_WIN32_WINNT=0x0601 -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 else()
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
@@ -30,11 +30,14 @@ project(TestFlags C CXX)
 
 include(src/CMake/CMakeFunctions.cmake)
 include(src/CMake/CMakeDownload.cmake)
+include(src/CMake/DownloadProject.cmake)
 
-download_github_com_latest( "https://api.github.com/repos/google/googletest/releases/latest" "tarball_url" "googletest.tar.gz")
+download_project(PROJ                googletest
+                 GIT_REPOSITORY      https://github.com/google/googletest.git
+                 GIT_TAG             master
+                 UPDATE_DISCONNECTED 1
+)
 
-SUBDIRLIST(GoogleTestRootDir ${CMAKE_SOURCE_DIR}/ThreeParty)
-
-add_subdirectory(${CMAKE_SOURCE_DIR}/ThreeParty/${GoogleTestRootDir})
+add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
 add_subdirectory(src/UnitTest)
